@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-static void GenerateCSV(int recordsToGenerate, string fileName)
+static void GenerateCSV(int recordsToGenerate, string filePath, string fileName)
 {
     string[] firstNames = ["John", "James", "Michael", "Robert", "David", "Mary", "Patricia", "Jennifer", "Linda", "Susan"];
     string[] lastNames = ["Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Miller", "Davis", "Wilson", "Thomas"];
@@ -24,7 +24,7 @@ static void GenerateCSV(int recordsToGenerate, string fileName)
         string entry = $"{firstName},{lastName},{age},{eyeColour},{hairColour}";
         csv.AppendLine(entry);
     }
-    File.WriteAllText($"C:\\Users\\Tim\\source\\repos\\HelloCSharp\\HelloCSharp\\{fileName}.csv", csv.ToString());
+    File.WriteAllText($"{filePath}\\{fileName}.csv", csv.ToString());
 }
 
 static void PrintRow(params string[] columns)
@@ -58,6 +58,7 @@ static void DisplayCSV(string filePath)
 {
     string line;
     List<Person> People = new List<Person>();
+    // Todo: Validate filePath and make sure a csv exists before continuing.
     StreamReader sr = new StreamReader(filePath);
     int iterator = 0;
     line = sr.ReadLine();
@@ -115,6 +116,7 @@ static void MenuLoop()
     }
     else if (request == "no" || request == "n")
     {
+        Console.WriteLine("Closing console.");
         Environment.Exit(0);
     }
     else
@@ -147,6 +149,8 @@ static void OpenMenu()
     {
         Console.WriteLine("Please provide a file name for your .csv.");
         string fileName = Console.ReadLine();
+        Console.WriteLine("Please provide a location to store the csv. I.e 'C:\\Users\\John\\Desktop' ");
+        string filePath = Console.ReadLine();
         Console.WriteLine("Please provide the amount of records you would like to generate.");
         string numberOfRecords = Console.ReadLine();
         bool isNumeric = Int32.TryParse(numberOfRecords, out _);
@@ -155,7 +159,7 @@ static void OpenMenu()
             Console.WriteLine($"{numberOfRecords} is not a number. Please try again");
             numberOfRecords = Console.ReadLine();
         }
-        GenerateCSV(Int32.Parse(numberOfRecords), fileName);
+        GenerateCSV(Int32.Parse(numberOfRecords), filePath, fileName);
         MenuLoop();
     }
 }
